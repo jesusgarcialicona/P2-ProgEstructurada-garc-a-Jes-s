@@ -158,3 +158,53 @@ def calcular_rmse(predicciones, reales):
     print(f"  RMSE calculado:              {rmse_final:.6f}")
  
     return rmse_final
+# ==========================================
+# 4. PROGRAMA PRINCIPAL (PUNTO DE ENTRADA)
+# ==========================================
+if __name__ == "__main__":
+    print("=" * 55)
+    print("      INICIANDO SIMULADOR DE AGENTES DE IA")
+    print("=" * 55)
+ 
+    # --- PASO 1: Validar el entorno del sistema ---
+    print("\n[1] INFORMACIÓN DEL SISTEMA:")
+    print("-" * 40)
+    plataforma, version = obtener_info_sistema()
+ 
+    # --- PASO 2: Simular el entrenamiento ---
+    print("\n[2] SIMULACIÓN DE ENTRENAMIENTO:")
+    print("-" * 40)
+    lista_loss, lista_latencia, predicciones, reales = simular_metricas_entrenamiento(MAX_EPOCHS)
+ 
+    # --- PASO 3: Analizar el rendimiento con statistics ---
+    print("\n[3] ANÁLISIS DE RENDIMIENTO:")
+    print("-" * 40)
+    media_loss, desviacion_loss, mediana_latencia = analizar_rendimiento(lista_loss, lista_latencia)
+ 
+    # --- PASO 4: Calcular el RMSE con math ---
+    print("\n[4] CÁLCULO DE ERROR (RMSE):")
+    print("-" * 40)
+    rmse = calcular_rmse(predicciones, reales)
+ 
+    # --- PASO 5: Reporte final y verificación de métricas críticas ---
+    print("\n[5] REPORTE FINAL:")
+    print("-" * 40)
+    print(f"  Media de loss:      {media_loss:.4f}")
+    print(f"  Desv. estándar:     {desviacion_loss:.4f}")
+    print(f"  Mediana latencia:   {mediana_latencia:.2f} ms")
+    print(f"  RMSE:               {rmse:.6f}")
+    print(f"  Umbral crítico:     {UMBRAL_ERROR_CRITICO}")
+ 
+    # Verificar si el loss promedio es crítico (usando condicional en lugar de excepciones)
+    if media_loss >= UMBRAL_ERROR_CRITICO:
+        print("\n  [!] ALERTA CRÍTICA: El loss promedio supera el umbral crítico.")
+        print("  [!] Terminando el programa de forma controlada.")
+        # Llamada adicional a sys: sys.exit para salida limpia ante métricas críticas
+        sys.exit(1)
+    else:
+        print("\n  [OK] Las métricas están dentro de los parámetros aceptables.")
+        print("  [OK] Entrenamiento completado exitosamente.")
+ 
+    print("\n" + "=" * 55)
+    print("      SIMULACIÓN FINALIZADA")
+    print("=" * 55)
