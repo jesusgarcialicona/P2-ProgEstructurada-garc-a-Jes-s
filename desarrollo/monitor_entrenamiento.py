@@ -208,3 +208,112 @@ if __name__ == "__main__":
     print("\n" + "=" * 55)
     print("      SIMULACIÓN FINALIZADA")
     print("=" * 55)
+# ==========================================
+# 5. CUESTIONARIO DE ANÁLISIS DE BIBLIOTECAS
+# ==========================================
+ 
+"""
+CUESTIONARIO DE ANÁLISIS DE BIBLIOTECAS
+ 
+---------------------------------------------------------------------------
+Pregunta 1 — Uso de Objetos y Métodos
+---------------------------------------------------------------------------
+En datetime.datetime.now():
+  - La primera parte "datetime" es el MÓDULO (la biblioteca que importamos
+    con "import datetime").
+  - La segunda parte "datetime" es la CLASE que vive dentro de ese módulo.
+    Una clase es una plantilla que agrupa datos y comportamientos relacionados.
+  - ".now()" es el MÉTODO de esa clase: una función que pertenece a la clase
+    y que, al ejecutarse, devuelve un objeto con la fecha y hora actuales.
+ 
+Relación con biblioteca externa:
+  Una biblioteca externa (o estándar) es un conjunto de archivos de código
+  ya escritos que podemos reutilizar. Al hacer "import datetime" le decimos
+  a Python que cargue ese archivo. Dentro de él existe la clase datetime, y
+  esa clase expone el método now(). Es decir, la biblioteca es el contenedor;
+  la clase es la plantilla; y el método es la acción que ejecutamos sobre
+  esa plantilla.
+ 
+---------------------------------------------------------------------------
+Pregunta 2 — Diferenciación Técnica
+---------------------------------------------------------------------------
+Con "import math" (módulo completo):
+  Se carga todo el módulo. Para usar cualquier función debemos anteponer
+  el nombre del módulo:
+      math.sqrt(9)   math.pow(2, 3)   math.fabs(-5)
+ 
+Con "from math import sqrt" (función específica):
+  Solo se importa la función sqrt al espacio de nombres actual. Podemos
+  invocarla directamente SIN prefijo:
+      sqrt(9)
+  Sin embargo, math.pow y math.fabs ya no estarían disponibles a menos
+  que también se importen explícitamente.
+ 
+Diferencia clave: "import math" requiere el prefijo "math." siempre;
+"from math import sqrt" elimina ese prefijo pero limita lo disponible.
+ 
+---------------------------------------------------------------------------
+Pregunta 3 — Flujo y Lógica
+---------------------------------------------------------------------------
+La conexión entre simulación y RMSE sigue estos pasos:
+ 
+  1. simular_metricas_entrenamiento() genera, por cada epoch, un valor de
+     "prediccion" (random.uniform) y un valor "real" (random.uniform).
+     Ambos se guardan en las listas "lista_predicciones" y "lista_reales".
+ 
+  2. Esas dos listas se retornan como parte de la tupla de resultados de la
+     función de simulación y se capturan en el programa principal:
+         lista_loss, lista_latencia, predicciones, reales = simular_metricas...
+ 
+  3. Las listas "predicciones" y "reales" se pasan como argumentos directos
+     a calcular_rmse(predicciones, reales).
+ 
+  4. Dentro de calcular_rmse(), se itera sobre ambas listas al mismo tiempo
+     usando el índice "i", se calcula la diferencia en cada posición, se
+     eleva al cuadrado (math.pow), se acumula, se divide entre n para
+     obtener el MSE y finalmente se aplica math.sqrt para obtener el RMSE.
+ 
+  De esta forma, los datos fluyen: simulación → listas → función de cálculo.
+ 
+---------------------------------------------------------------------------
+Pregunta 4 — Mapeo de Tipos de Datos
+---------------------------------------------------------------------------
+Dos tipos de datos complejos (colecciones) utilizados:
+ 
+  1. LISTA (list) — "lista_loss", "lista_latencia", "lista_predicciones",
+     "lista_reales":
+     Se eligió la lista porque necesitamos almacenar múltiples valores del
+     mismo tipo en orden de inserción. Las funciones de "statistics" como
+     mean(), stdev() y median() aceptan listas (o cualquier iterable) como
+     argumento, lo que hace natural este tipo. Una variable simple solo
+     podría guardar UN valor a la vez, perdiendo el historial de todos los
+     epochs.
+ 
+  2. TUPLA (tuple) — el retorno de simular_metricas_entrenamiento():
+     La función devuelve cuatro listas agrupadas en una tupla implícita
+     (Python empaqueta múltiples valores de retorno como tupla). Se eligió
+     porque los cuatro elementos (loss, latencia, predicciones, reales) son
+     un conjunto fijo de resultados que pertenecen a la misma ejecución y
+     no deben modificarse una vez retornados; la tupla refuerza esa
+     inmutabilidad conceptual frente a una lista de listas.
+ 
+---------------------------------------------------------------------------
+Pregunta 5 — Autoevaluación de Abstracción
+---------------------------------------------------------------------------
+No fue necesario programar la fórmula matemática de la desviación estándar.
+Solo se escribió:
+    desviacion_loss = statistics.stdev(lista_loss)
+ 
+La biblioteca "statistics" oculta (abstrae) todos los pasos internos:
+calcular la media, restar cada valor, elevar al cuadrado las diferencias,
+promediarlas y sacar la raíz cuadrada. Nosotros solo le entregamos la lista
+y recibimos el resultado.
+ 
+Relación con el concepto de Abstracción:
+  La Abstracción consiste en usar un componente (función, módulo, clase)
+  conociendo QUÉ hace sin necesidad de saber CÓMO lo hace internamente.
+  Las bibliotecas estándar de Python son el ejemplo más claro: nos proveen
+  herramientas listas para usar, elevando nuestro nivel de trabajo y
+  permitiéndonos enfocarnos en la lógica del problema (el simulador de
+  entrenamiento) en lugar de reinventar operaciones matemáticas básicas.
+"""
